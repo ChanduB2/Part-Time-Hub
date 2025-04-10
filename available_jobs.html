@@ -1,51 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Available Jobs</title>
-    <link rel="stylesheet" href="ajobs.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Available Jobs</title>
+  <link rel="stylesheet" href="ajobs.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Available Jobs</h1>
-        <div id="jobContainer"></div>
-    </div>
+  <div class="container">
+    <h1>Available Jobs</h1>
+    <div id="jobContainer"></div>
+  </div>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            let jobList = JSON.parse(localStorage.getItem("jobListings")) || [];
-            let jobContainer = document.getElementById("jobContainer");
-    
-            if (jobList.length === 0) {
-                jobContainer.innerHTML = "<p class='no-jobs'>No jobs available at the moment.</p>";
-            } else {
-                jobList.forEach((job, index) => {
-                    let jobElement = document.createElement("div");
-                    jobElement.classList.add("job-post");
-                    jobElement.innerHTML = `
-                        <h3>${job.category}</h3>
-                        <p><strong>Description:</strong> ${job.description}</p>
-                        <p><strong>Hours per Week:</strong> ${job.hours}</p>
-                        <p><strong>Salary:</strong> ${job.salary}</p>
-                        <button class="apply-btn" onclick="applyForJob('${job.category}')">Apply</button>
-                    `;
-                    jobContainer.appendChild(jobElement);
-                });
-            }
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      let jobList = JSON.parse(localStorage.getItem("jobListings")) || [];
+      let jobContainer = document.getElementById("jobContainer");
+
+      if (jobList.length === 0) {
+        jobContainer.innerHTML = "<p class='no-jobs'>No jobs available at the moment.</p>";
+      } else {
+        jobList.forEach((job, index) => {
+          let jobElement = document.createElement("div");
+          jobElement.classList.add("job-post");
+          jobElement.innerHTML = `
+            <h3>${job.category}</h3>
+            <p><strong>Description:</strong> ${job.description}</p>
+            <p><strong>Hours per Week:</strong> ${job.hours}</p>
+            <p><strong>Salary:</strong> ${job.salary}</p>
+            <button class="apply-btn" onclick="applyForJob('${job.category}')">Apply</button>
+          `;
+          jobContainer.appendChild(jobElement);
         });
-    
-        function applyForJob(jobCategory) {
-            let experience = prompt("Enter your experience:");
-            if (!experience) return; // Stop if no input
-    
-            let applications = JSON.parse(localStorage.getItem("jobApplications")) || [];
-            applications.push({ jobCategory, experience });
-            localStorage.setItem("jobApplications", JSON.stringify(applications));
-    
-            alert("Application submitted successfully!");
-        }
-    </script>
-    
+      }
+    });
+
+    function applyForJob(jobCategory) {
+      const applications = JSON.parse(localStorage.getItem("jobApplications")) || [];
+      applications.push({ jobCategory });
+      localStorage.setItem("jobApplications", JSON.stringify(applications));
+      alert("Application submitted successfully!");
+    }
+  </script>
 </body>
 </html>
