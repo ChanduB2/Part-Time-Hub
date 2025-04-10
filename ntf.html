@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Applications</title>
+  <link rel="stylesheet" href="ajobs.css"> <!-- Using same CSS as available_jobs.html -->
+  <style>
+    .footer-button {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    .footer-button button {
+      background-color: #007BFF;
+      color: white;
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .footer-button button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Job Applications</h1>
+    <div id="notifications"></div>
+
+    <!-- ✅ Post Another Job Button -->
+    <div class="footer-button">
+      <button onclick="window.location.href='jobgiver.html'">Post another job</button>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      if (!localStorage.getItem("firstLogin")) {
+        localStorage.setItem("firstLogin", "false");
+        window.location.href = "jobgiver.html";
+        return;
+      }
+
+      const jobApplications = JSON.parse(localStorage.getItem("jobApplications")) || [];
+      const notificationsDiv = document.getElementById("notifications");
+
+      if (jobApplications.length === 0) {
+        notificationsDiv.innerHTML = "<p class='no-jobs'>No applications yet.</p>";
+      } else {
+        jobApplications.forEach(app => {
+          const appDiv = document.createElement("div");
+          appDiv.classList.add("job-post");
+          appDiv.innerHTML = `
+            <h3>Candidate Name: ${app.name || "Not provided"}</h3>
+            <p><strong>Age:</strong> ${app.age || "Not provided"}</p>
+            <p><strong>Experience:</strong> ${app.experience || "Not provided"}</p>
+            ${app.resume ? `<p><strong>Resume:</strong> <a href="${app.resume}" target="_blank">View Resume</a></p>` : ""}
+          `;
+          notificationsDiv.appendChild(appDiv);
+        });
+      }
+    });
+  </script>
+</body>
+</html>

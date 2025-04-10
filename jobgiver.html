@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Job Giver</title>
+  <link rel="stylesheet" href="jg.css">
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+</head>
+<body>
+  <div class="container">
+    <h1 class="title-box">Post a Job</h1>
+    <form id="jobForm">
+      <label for="category">Job Category:</label>
+      <select id="category" name="category">
+        <option value="driver">Driver</option>
+        <option value="waiter">Waiter</option>
+        <option value="baker">Baker</option>
+        <option value="chef">Chef</option>
+        <option value="other">Others</option>
+      </select>
+      <input type="text" id="otherCategory" placeholder="Enter other category" style="display: none;" />
+
+      <label for="description">Job Description:</label>
+      <textarea id="description" name="description" required></textarea>
+
+      <label for="hours">Hours per week:</label>
+      <input type="number" id="hours" name="hours" min="1" required />
+
+      <label for="salary">Salary Range:</label>
+      <select id="salary" name="salary">
+        <option value="400-500">400-500</option>
+        <option value="500-600">500-600</option>
+        <option value="600-700">600-700</option>
+      </select>
+
+      <label for="location">Select Work Location:</label>
+      <div id="map" style="height: 300px; width: 100%;"></div>
+      <input type="hidden" id="latitude" name="latitude" />
+      <input type="hidden" id="longitude" name="longitude" />
+
+      <label for="aadhar">Aadhar Number (Security):</label>
+      <input type="text" id="aadhar" name="aadhar" pattern="\d{12}" required />
+
+      <button type="submit">Post Job</button>
+    </form>
+  </div>
+
+  <script>
+    // Show/hide custom category input
+    document.getElementById("category").addEventListener("change", function () {
+      const otherInput = document.getElementById("otherCategory");
+      otherInput.style.display = this.value === "other" ? "block" : "none";
+    });
+
+    // Google Maps setup
+    function initMap() {
+      const defaultLocation = { lat: 28.6139, lng: 77.2090 };
+      const map = new google.maps.Map(document.getElementById("map"), {
+        center: defaultLocation,
+        zoom: 10
+      });
+
+      const marker = new google.maps.Marker({
+        position: defaultLocation,
+        map: map,
+        draggable: true
+      });
+
+      // Update hidden fields on marker move
+      google.maps.event.addListener(marker, 'dragend', function (event) {
+        document.getElementById('latitude').value = event.latLng.lat();
+        document.getElementById('longitude').value = event.latLng.lng();
+      });
+
+      // Set default lat/lng
+      document.getElementById('latitude').value = defaultLocation.lat;
+      document.getElementById('longitude').value = defaultLocation.lng;
+    }
+
+    // Form submission
+    document.getElementById("jobForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      let category = document.getElementById("category").value;
+      if (category === "other") {
+        category = document.getElementById("otherCategory").value.trim();
+      }
+
+      const job = {
+        category: category,
+        description: document.getElementById("description").value.trim(),
+        hours: document.getElementById("hours").value,
+        salary: document.getElementById("salary").value,
+        latitude: document.getElementById("latitude").value,
+        longitude: document.getElementById("longitude").value,
+        aadhar: document.getElementById("aadhar").value
+      };
+
+      const jobs = JSON.parse(localStorage.getItem("jobListings")) || [];
+      jobs.push(job);
+      localStorage.setItem("jobListings", JSON.stringify(jobs));
+
+      alert("Job Posted Successfully!");
+      window.location.href = "ntf.html";
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Seeker</title>
+    <link rel="stylesheet" href="jg.css">
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap" async defer></script>
+</head>
+<body>
+    <h1>Find a Job</h1>
+    <form id="jobSeekerForm">
+        <label for="description">Describe Your Skills & Experience:</label>
+        <textarea id="description" name="description" required></textarea>
+
+        <label for="hours">Hours Available per Week:</label>
+        <select id="salary" name="salary">
+            <option value="5-10">5-10</option>
+            <option value="10-15">10-15</option>
+            <option value="15-20">15-20</option>
+        </select>
+
+        <label for="salary">Expected Salary Range:</label>
+        <select id="salary" name="salary">
+            <option value="400-500">400-500</option>
+            <option value="500-600">500-600</option>
+            <option value="600-700">600-700</option>
+        </select>
+
+        <label for="location">Preferred Work Location:</label>
+        <div id="map" style="height: 300px; width: 100%;"></div>
+        <input type="hidden" id="latitude" name="latitude">
+        <input type="hidden" id="longitude" name="longitude">
+
+        <label for="aadhar">Aadhar Number (Security):</label>
+        <input type="text" id="aadhar" name="aadhar" pattern="\d{12}" required>
+
+        <button type="submit">Submit Application</button>
+    </form>
+
+    <script>
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 28.6139, lng: 77.2090}, // Default location (India)
+                zoom: 10
+            });
+            var marker = new google.maps.Marker({
+                position: {lat: 28.6139, lng: 77.2090},
+                map: map,
+                draggable: true
+            });
+            
+            google.maps.event.addListener(marker, 'dragend', function(event) {
+                document.getElementById('latitude').value = event.latLng.lat();
+                document.getElementById('longitude').value = event.latLng.lng();
+            });
+        }
+
+        document.getElementById("jobSeekerForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            alert("Application Submitted Successfully!");
+            window.location.href = "jobseekerreg.html";
+        });
+    </script>
+</body>
+</html>

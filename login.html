@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+  <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+  <div class="form-container">
+    <h2 style="color: whitesmoke; text-align: center;">Login</h2>
+    <form id="loginForm">
+      <input type="email" id="emailInput" placeholder="Enter your email" required>
+      <input type="password" id="passwordInput" placeholder="Enter your password" required>
+      <button type="submit">Login</button>
+      <a href="register.html">Don't have an account? Register here</a>
+      <a href="forgot.html" class="forgot-link">Forgot Password?</a>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("loginForm").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const enteredEmail = document.getElementById("emailInput").value.trim().toLowerCase();
+      const enteredPassword = document.getElementById("passwordInput").value;
+
+      const users = JSON.parse(localStorage.getItem("users")) || [];
+      const matchedUser = users.find(user => user.email.toLowerCase() === enteredEmail && user.password === enteredPassword);
+
+      if (matchedUser) {
+        const firstLoginKey = `firstLogin:${enteredEmail}`;
+        const isFirstLogin = localStorage.getItem(firstLoginKey) !== "false";
+
+        localStorage.setItem("currentUserEmail", enteredEmail);
+        localStorage.setItem("isFirstLogin", isFirstLogin);
+        localStorage.setItem(firstLoginKey, "false");
+
+        alert("Login Successful!");
+        window.location.href = "home.html";
+      } else {
+        alert("Invalid email or password.");
+      }
+    });
+  </script>
+</body>
+</html>

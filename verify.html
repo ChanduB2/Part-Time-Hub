@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Verify OTP</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="form-container">
+    <h2>Enter OTP</h2>
+    <form id="otpForm">
+      <input type="text" id="enteredOtp" placeholder="Enter OTP" required />
+      <button type="submit">Verify OTP</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("otpForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+
+      const enteredOtp = document.getElementById("enteredOtp").value;
+      const storedOtp = localStorage.getItem("otp");
+
+      if (enteredOtp === storedOtp) {
+        alert("OTP verified successfully!");
+        window.location.href = "login.html";
+      } else {
+        alert("Invalid OTP. Please try again.");
+      }
+    });
+  </script>
+</body>
+</html>

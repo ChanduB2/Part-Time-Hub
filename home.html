@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Home Page</title>
+  <link rel="stylesheet" href="styles1.css">
+</head>
+<body>
+  <h1>Part-Time Hub Home Page</h1>
+  <br><hr>
+  <h2>Are you a Job Giver or a Job Seeker?</h2>
+  <div class="job-options">
+    <div class="job-box" id="jobGiver">Job Giver</div>
+    <div class="job-box" id="jobSeeker">Job Seeker</div>
+  </div>
+
+  <script>
+    const isFirstLogin = localStorage.getItem("isFirstLogin") === "true";
+
+    document.getElementById("jobSeeker").addEventListener("click", function () {
+      window.location.href = isFirstLogin ? "jobseeker.html" : "available_jobs.html";
+    });
+
+    document.getElementById("jobGiver").addEventListener("click", function () {
+      window.location.href = isFirstLogin ? "jobgiver.html" : "ntf.html";
+    });
+
+    document.querySelectorAll(".job-box").forEach(box => {
+      box.addEventListener("mouseover", () => {
+        box.style.boxShadow = "0px 4px 10px rgba(0,0,0,0.3)";
+      });
+      box.addEventListener("mouseout", () => {
+        box.style.boxShadow = "none";
+      });
+    });
+  </script>
+</body>
+</html>
