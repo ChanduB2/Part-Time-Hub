@@ -26,21 +26,23 @@
 
     <script>
         document.getElementById("jobSeekerForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            
-            const jobSeeker = {
-                name: document.getElementById("name").value,
-                experience: document.getElementById("experience").value,
-                resume: document.getElementById("resume").value
-            };
-            
-            let jobApplications = JSON.parse(localStorage.getItem("jobApplications")) || [];
-            jobApplications.push(jobSeeker);
-            localStorage.setItem("jobApplications", JSON.stringify(jobApplications));
-            
-            alert("Registration successful! Redirecting to available jobs.");
-            window.location.href = "available_jobs.html";
-        });
+    event.preventDefault();
+
+    const jobSeeker = {
+        name: document.getElementById("name").value,
+        age: document.getElementById("age").value, // ✅ Include age here
+        experience: document.getElementById("experience").value,
+        resume: document.getElementById("resume").value
+    };
+
+    let jobApplications = JSON.parse(localStorage.getItem("jobApplications")) || [];
+    jobApplications.push(jobSeeker);
+    localStorage.setItem("jobApplications", JSON.stringify(jobApplications));
+
+    alert("Registration successful! Redirecting to available jobs.");
+    window.location.href = "available_jobs.html";
+});
+
 
         document.addEventListener("DOMContentLoaded", function() {
             if (localStorage.getItem("jobGiverFirstLogin") === "false") {
